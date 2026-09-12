@@ -1,0 +1,19 @@
+# Captured data and generated artifacts (don't commit raw traffic captures)
+flows*.csv
+attack_flows*.csv
+normal_flows*.csv
+*.pcap
+*.joblib
+KDDTrain*.txt
+KDDTest*.txt
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
