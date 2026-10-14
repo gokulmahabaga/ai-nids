@@ -1,0 +1,24 @@
+elapsed_seconds,activity,detail
+0.033,session_start,/home/hp/ai-nids/experiments/mixed_capture_v3/session_20261014_172114
+1.253,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=1
+1.256,normal_http_result,"request=1, status=200"
+1.556,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=2
+1.56,normal_http_result,"request=2, status=200"
+1.861,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=3
+1.865,normal_http_result,"request=3, status=200"
+2.167,scan_start,nmap -sS -Pn -n -p 1-1000 --scan-delay 5ms 127.0.0.1
+2.667,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=4
+2.672,normal_http_result,"request=4, status=200"
+3.172,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=5
+3.177,normal_http_result,"request=5, status=200"
+3.678,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=6
+3.685,normal_http_result,"request=6, status=200"
+4.185,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=7
+4.188,normal_http_result,"request=7, status=200"
+4.689,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=8
+4.694,normal_http_result,"request=8, status=200"
+5.195,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=9
+5.2,normal_http_result,"request=9, status=200"
+5.7,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=10
+5.706,normal_http_result,"request=10, status=200"
+7.567,scan_result,return_code=0

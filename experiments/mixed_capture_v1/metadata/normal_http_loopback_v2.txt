@@ -1,0 +1,12 @@
+Experiment: Normal HTTP loopback traffic
+Capture file: pcap/normal_http_loopback_v2.pcap
+Flow file: flows/normal_http_loopback_v2.csv
+Interface: lo
+Target: 127.0.0.1:8765
+Traffic generation: Five HTTP GET requests
+Observed HTTP responses: Five status-200 responses
+Captured packets: 120
+Extracted flows: 5
+Ground-truth class: Normal
+Label source: Controlled traffic-generation procedure and HTTP responses
+Limitations: Local loopback traffic; not representative of all normal network traffic.

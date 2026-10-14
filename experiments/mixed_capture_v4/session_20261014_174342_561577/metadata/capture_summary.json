@@ -1,0 +1,20 @@
+{
+  "capture_directory": "/home/hp/ai-nids/experiments/mixed_capture_v4/session_20261014_174342_561577",
+  "interface": "lo",
+  "capture_method": "tcpdump",
+  "pcap": "/home/hp/ai-nids/experiments/mixed_capture_v4/session_20261014_174342_561577/pcap/mixed_session_v3.pcap",
+  "packet_count": 2122,
+  "scan_target": "127.0.0.1",
+  "scan_ports_requested": "1-1000",
+  "scan_initial_syn_count": 1000,
+  "scan_unique_destination_ports_observed": 1000,
+  "scan_missing_destination_ports": 0,
+  "http_target_port": 8765,
+  "http_packets_observed": 122,
+  "http_requests_attempted": 10,
+  "http_requests_returning_200": 10,
+  "nmap_return_code": 0,
+  "nmap_error": null,
+  "tcpdump_return_code": 0,
+  "notes": "Loopback research capture. Verify tcpdump drop statistics, activity overlap, labels, and flow extraction before evaluation."
+}

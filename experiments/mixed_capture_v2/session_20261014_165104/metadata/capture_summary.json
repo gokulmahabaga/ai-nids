@@ -1,0 +1,12 @@
+{
+  "capture_directory": "/root/ai-nids/experiments/mixed_capture_v2/session_20261014_165104",
+  "interface": "lo",
+  "capture_filter": "none; loopback interface only",
+  "pcap": "/root/ai-nids/experiments/mixed_capture_v2/session_20261014_165104/pcap/mixed_session_v1.pcap",
+  "packet_count": 478,
+  "normal_http_target_port": 8765,
+  "scan_target": "127.0.0.1",
+  "scan_ports": "1-1000 excluding 8765",
+  "ground_truth_basis": "Recorded HTTP request outcomes and Nmap scan log; verify extracted flows against these records before labeling.",
+  "errors": []
+}

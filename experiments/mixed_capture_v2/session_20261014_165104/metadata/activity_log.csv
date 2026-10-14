@@ -1,0 +1,23 @@
+timestamp_utc,elapsed_seconds,activity,detail
+2026-10-14T16:51:05.653095+00:00,1.225,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=1
+2026-10-14T16:51:05.670869+00:00,1.243,normal_http_result,"request=1, status=200"
+2026-10-14T16:51:05.971275+00:00,1.543,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=2
+2026-10-14T16:51:05.979644+00:00,1.552,normal_http_result,"request=2, status=200"
+2026-10-14T16:51:06.280026+00:00,1.852,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=3
+2026-10-14T16:51:06.291865+00:00,1.864,normal_http_result,"request=3, status=200"
+2026-10-14T16:51:06.593132+00:00,2.165,scan_start,"Authorized SYN scan of 127.0.0.1 ports 1-1000, excluding 8765"
+2026-10-14T16:51:06.593721+00:00,2.166,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=4
+2026-10-14T16:51:06.600419+00:00,2.172,normal_http_result,"request=4, status=200"
+2026-10-14T16:51:06.847024+00:00,2.419,scan_result,return_code=0
+2026-10-14T16:51:07.100694+00:00,2.673,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=5
+2026-10-14T16:51:07.111784+00:00,2.684,normal_http_result,"request=5, status=200"
+2026-10-14T16:51:07.612145+00:00,3.184,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=6
+2026-10-14T16:51:07.625577+00:00,3.198,normal_http_result,"request=6, status=200"
+2026-10-14T16:51:08.125915+00:00,3.698,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=7
+2026-10-14T16:51:08.142271+00:00,3.714,normal_http_result,"request=7, status=200"
+2026-10-14T16:51:08.642577+00:00,4.215,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=8
+2026-10-14T16:51:08.654031+00:00,4.226,normal_http_result,"request=8, status=200"
+2026-10-14T16:51:09.154338+00:00,4.726,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=9
+2026-10-14T16:51:09.170983+00:00,4.743,normal_http_result,"request=9, status=200"
+2026-10-14T16:51:09.671320+00:00,5.243,normal_http_start,GET http://127.0.0.1:8765/?mixed_session_request=10
+2026-10-14T16:51:09.687037+00:00,5.259,normal_http_result,"request=10, status=200"

@@ -1,0 +1,4 @@
+test_session,train_rows,test_rows,accuracy,balanced_accuracy,precision_portscan,recall_portscan,f1_portscan
+session_20261014_173700_883079,2020,1010,1.0,1.0,1.0,1.0,1.0
+session_20261014_174323_729256,2020,1010,1.0,1.0,1.0,1.0,1.0
+session_20261014_174342_561577,2020,1010,1.0,1.0,1.0,1.0,1.0

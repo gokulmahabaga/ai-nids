@@ -1,0 +1,15 @@
+,Stage 1: Per-flow,Stage 2: With fan-out
+duration,0.135,0.11000000000000003
+avg_packet_size,0.135,0.08000000000000002
+packet_count,0.125,0.12500000000000003
+ack_count,0.115,0.10000000000000003
+avg_inter_arrival_time,0.115,0.09000000000000001
+byte_count,0.11,0.05000000000000002
+fin_count,0.1,0.11500000000000003
+syn_count,0.095,0.07500000000000001
+bytes_per_second,0.07,0.06500000000000002
+protocol,0.0,0.0
+rst_count,0.0,0.0
+src_conn_rate,0.0,0.10500000000000002
+src_distinct_ports,0.0,0.08500000000000002
+src_distinct_hosts,0.0,0.0

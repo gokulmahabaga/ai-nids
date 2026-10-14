@@ -1,0 +1,16 @@
+feature,test_session,accuracy,balanced_accuracy
+byte_count,session_20261014_173700_883079,1.0,1.0
+byte_count,session_20261014_174323_729256,1.0,1.0
+byte_count,session_20261014_174342_561577,1.0,1.0
+packet_count,session_20261014_173700_883079,1.0,1.0
+packet_count,session_20261014_174323_729256,1.0,1.0
+packet_count,session_20261014_174342_561577,1.0,1.0
+duration,session_20261014_173700_883079,1.0,1.0
+duration,session_20261014_174323_729256,1.0,1.0
+duration,session_20261014_174342_561577,1.0,1.0
+avg_packet_size,session_20261014_173700_883079,1.0,1.0
+avg_packet_size,session_20261014_174323_729256,1.0,1.0
+avg_packet_size,session_20261014_174342_561577,1.0,1.0
+syn_count,session_20261014_173700_883079,1.0,1.0
+syn_count,session_20261014_174323_729256,1.0,1.0
+syn_count,session_20261014_174342_561577,1.0,1.0

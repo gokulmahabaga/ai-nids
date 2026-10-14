@@ -47,7 +47,7 @@ def classify_flows(flows, activity, bundle):
     rows = []
     keys = []
     for key, stats in flows.items():
-        rows.append(stats.to_row(key, source_activity=activity))
+        rows.append(stats.to_row(key))
         keys.append(key)
 
     if not rows:
@@ -84,6 +84,7 @@ def main():
     print(f"Sniffing on {args.iface} in {args.window}s windows. Ctrl+C to stop.\n")
 
     signal.signal(signal.SIGINT, _handle_sigint)
+    activity = None
 
     round_num = 0
     while True:
@@ -104,7 +105,7 @@ def main():
             print(f"[window {round_num}] no packets captured")
             continue
 
-        flows, activity = build_flows(packets)
+        flows, activity = build_flows(packets, activity=activity)
         results = classify_flows(flows, activity, bundle)
 
         print(f"--- window {round_num}: {len(packets)} packets, {len(flows)} flows ---")

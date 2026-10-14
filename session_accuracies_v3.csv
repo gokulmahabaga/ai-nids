@@ -1,0 +1,97 @@
+model,seed,session,rows,accuracy
+RF per-flow,0,new_attack1.csv,80,1.0
+RF per-flow,0,new_normal1.csv,56,0.2857142857142857
+RF per-flow,0,new_attack2.csv,118,1.0
+RF per-flow,0,new_normal2.csv,56,0.2857142857142857
+RF per-flow,0,new_attack3.csv,54,1.0
+RF per-flow,0,new_normal3.csv,51,0.3333333333333333
+RF per-flow,1,new_attack1.csv,80,1.0
+RF per-flow,1,new_normal1.csv,56,0.9821428571428571
+RF per-flow,1,new_attack2.csv,118,1.0
+RF per-flow,1,new_normal2.csv,56,0.9821428571428571
+RF per-flow,1,new_attack3.csv,54,1.0
+RF per-flow,1,new_normal3.csv,51,0.9803921568627451
+RF per-flow,2,new_attack1.csv,80,1.0
+RF per-flow,2,new_normal1.csv,56,0.9821428571428571
+RF per-flow,2,new_attack2.csv,118,1.0
+RF per-flow,2,new_normal2.csv,56,0.9821428571428571
+RF per-flow,2,new_attack3.csv,54,1.0
+RF per-flow,2,new_normal3.csv,51,0.9803921568627451
+RF per-flow,3,new_attack1.csv,80,1.0
+RF per-flow,3,new_normal1.csv,56,0.9821428571428571
+RF per-flow,3,new_attack2.csv,118,1.0
+RF per-flow,3,new_normal2.csv,56,0.9821428571428571
+RF per-flow,3,new_attack3.csv,54,1.0
+RF per-flow,3,new_normal3.csv,51,0.9803921568627451
+RF per-flow,4,new_attack1.csv,80,1.0
+RF per-flow,4,new_normal1.csv,56,0.2857142857142857
+RF per-flow,4,new_attack2.csv,118,1.0
+RF per-flow,4,new_normal2.csv,56,0.2857142857142857
+RF per-flow,4,new_attack3.csv,54,1.0
+RF per-flow,4,new_normal3.csv,51,0.3333333333333333
+RF with fan-out,0,new_attack1.csv,80,1.0
+RF with fan-out,0,new_normal1.csv,56,1.0
+RF with fan-out,0,new_attack2.csv,118,0.9915254237288136
+RF with fan-out,0,new_normal2.csv,56,1.0
+RF with fan-out,0,new_attack3.csv,54,1.0
+RF with fan-out,0,new_normal3.csv,51,1.0
+RF with fan-out,1,new_attack1.csv,80,1.0
+RF with fan-out,1,new_normal1.csv,56,1.0
+RF with fan-out,1,new_attack2.csv,118,1.0
+RF with fan-out,1,new_normal2.csv,56,1.0
+RF with fan-out,1,new_attack3.csv,54,1.0
+RF with fan-out,1,new_normal3.csv,51,1.0
+RF with fan-out,2,new_attack1.csv,80,1.0
+RF with fan-out,2,new_normal1.csv,56,1.0
+RF with fan-out,2,new_attack2.csv,118,1.0
+RF with fan-out,2,new_normal2.csv,56,1.0
+RF with fan-out,2,new_attack3.csv,54,1.0
+RF with fan-out,2,new_normal3.csv,51,1.0
+RF with fan-out,3,new_attack1.csv,80,1.0
+RF with fan-out,3,new_normal1.csv,56,1.0
+RF with fan-out,3,new_attack2.csv,118,1.0
+RF with fan-out,3,new_normal2.csv,56,1.0
+RF with fan-out,3,new_attack3.csv,54,1.0
+RF with fan-out,3,new_normal3.csv,51,1.0
+RF with fan-out,4,new_attack1.csv,80,1.0
+RF with fan-out,4,new_normal1.csv,56,1.0
+RF with fan-out,4,new_attack2.csv,118,0.9915254237288136
+RF with fan-out,4,new_normal2.csv,56,1.0
+RF with fan-out,4,new_attack3.csv,54,1.0
+RF with fan-out,4,new_normal3.csv,51,1.0
+RF without distinct ports,0,new_attack1.csv,80,1.0
+RF without distinct ports,0,new_normal1.csv,56,1.0
+RF without distinct ports,0,new_attack2.csv,118,1.0
+RF without distinct ports,0,new_normal2.csv,56,1.0
+RF without distinct ports,0,new_attack3.csv,54,1.0
+RF without distinct ports,0,new_normal3.csv,51,1.0
+RF without distinct ports,1,new_attack1.csv,80,1.0
+RF without distinct ports,1,new_normal1.csv,56,1.0
+RF without distinct ports,1,new_attack2.csv,118,1.0
+RF without distinct ports,1,new_normal2.csv,56,1.0
+RF without distinct ports,1,new_attack3.csv,54,1.0
+RF without distinct ports,1,new_normal3.csv,51,1.0
+RF without distinct ports,2,new_attack1.csv,80,1.0
+RF without distinct ports,2,new_normal1.csv,56,1.0
+RF without distinct ports,2,new_attack2.csv,118,1.0
+RF without distinct ports,2,new_normal2.csv,56,1.0
+RF without distinct ports,2,new_attack3.csv,54,1.0
+RF without distinct ports,2,new_normal3.csv,51,1.0
+RF without distinct ports,3,new_attack1.csv,80,1.0
+RF without distinct ports,3,new_normal1.csv,56,0.30357142857142855
+RF without distinct ports,3,new_attack2.csv,118,1.0
+RF without distinct ports,3,new_normal2.csv,56,0.39285714285714285
+RF without distinct ports,3,new_attack3.csv,54,1.0
+RF without distinct ports,3,new_normal3.csv,51,0.43137254901960786
+RF without distinct ports,4,new_attack1.csv,80,1.0
+RF without distinct ports,4,new_normal1.csv,56,0.2857142857142857
+RF without distinct ports,4,new_attack2.csv,118,1.0
+RF without distinct ports,4,new_normal2.csv,56,0.2857142857142857
+RF without distinct ports,4,new_attack3.csv,54,1.0
+RF without distinct ports,4,new_normal3.csv,51,0.3333333333333333
+Validation-tuned port threshold,validation_tuned,new_attack1.csv,80,0.0
+Validation-tuned port threshold,validation_tuned,new_normal1.csv,56,1.0
+Validation-tuned port threshold,validation_tuned,new_attack2.csv,118,0.0
+Validation-tuned port threshold,validation_tuned,new_normal2.csv,56,1.0
+Validation-tuned port threshold,validation_tuned,new_attack3.csv,54,0.0
+Validation-tuned port threshold,validation_tuned,new_normal3.csv,51,1.0

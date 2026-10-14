@@ -57,53 +57,78 @@ def raw_endpoints(pkt):
 
 
 class SourceActivity:
-    """Tracks, per source IP, how many distinct destination ports/hosts it
-    contacted across the WHOLE capture window. A port scan's signature is
-    exactly this: one source, many destination ports, in a short time --
-    invisible if you only look at a single flow in isolation."""
+    """Track source activity within the preceding five seconds."""
+
+    WINDOW_SECONDS = 5.0
 
     def __init__(self):
-        self.dst_ports = defaultdict(set)
-        self.dst_hosts = defaultdict(set)
-        self.packet_count = defaultdict(int)
-        self.first_ts = {}
-        self.last_ts = {}
+        self.events = defaultdict(list)
+
 
     def update(self, pkt, ts):
         endpoints = raw_endpoints(pkt)
         if endpoints is None:
             return
+
         src, dst, dport = endpoints
 
-        # Only count NEW connection ATTEMPTS toward fan-out -- a pure SYN
-        # (no ACK) for TCP. Without this, a server's normal replies to many
-        # different client ports look identical to a scan, since on loopback
-        # (or NAT) client and server can share the same IP. UDP has no
-        # handshake concept, so every packet counts as an "attempt".
-        is_attempt = True
         if TCP in pkt:
-            flags = pkt[TCP].sprintf("%TCP.flags%")
-            is_attempt = "S" in flags and "A" not in flags
+            flags = int(pkt[TCP].flags)
+            syn = bool(flags & 0x02)
+            ack = bool(flags & 0x10)
 
-        if not is_attempt:
+            if not syn or ack:
+                return
+        elif UDP not in pkt:
             return
 
-        if dport is not None:
-            self.dst_ports[src].add(dport)
-        self.dst_hosts[src].add(dst)
-        self.packet_count[src] += 1
-        if src not in self.first_ts:
-            self.first_ts[src] = ts
-        self.last_ts[src] = ts
+        ts = float(ts)
+        cutoff = ts - self.WINDOW_SECONDS
 
-    def features_for(self, src_ip):
-        if src_ip not in self.packet_count:
-            return {"src_distinct_ports": 0, "src_distinct_hosts": 0, "src_conn_rate": 0.0}
-        window = max(self.last_ts[src_ip] - self.first_ts[src_ip], 1e-6)
+        # Remove expired events for this source.
+        expired_sources = []
+
+        for source, events in self.events.items():
+            recent_events = [
+                (event_ts, event_dst, event_port)
+                for event_ts, event_dst, event_port in events
+                if event_ts > cutoff
+            ]
+
+            if recent_events:
+                self.events[source] = recent_events
+            else:
+                expired_sources.append(source)
+
+        for source in expired_sources:
+            del self.events[source]
+
+        # Store the current event.
+        self.events[src].append((ts, dst, dport))
+
+
+
+    def features_for(self, src_ip, ts):
+        cutoff = float(ts) - self.WINDOW_SECONDS
+
+        events = [
+            (event_ts, dst, dport)
+            for event_ts, dst, dport in self.events.get(src_ip, [])
+            if cutoff < event_ts <= float(ts)
+        ]
+
+        ports = {
+            dport for _, _, dport in events
+            if dport is not None
+        }
+        hosts = {dst for _, dst, _ in events}
+
         return {
-            "src_distinct_ports": len(self.dst_ports[src_ip]),
-            "src_distinct_hosts": len(self.dst_hosts[src_ip]),
-            "src_conn_rate": round(self.packet_count[src_ip] / window, 2),
+            "src_distinct_ports": len(ports),
+            "src_distinct_hosts": len(hosts),
+            "src_conn_rate": round(
+                len(events) / self.WINDOW_SECONDS, 2
+            ),
         }
 
 
@@ -120,6 +145,11 @@ class FlowStats:
         self.tcp_flags_seen = defaultdict(int)  # e.g. {'S':2, 'A':10, 'F':1}
         self.protocols = set()
         self.orig_src = None  # source IP of the FIRST packet seen in this flow
+        self.source_activity_features = {
+            "src_distinct_ports": 0,
+            "src_distinct_hosts": 0,
+            "src_conn_rate": 0.0,
+        }
 
     def update(self, pkt, ts):
         if self.orig_src is None and IP in pkt:
@@ -168,21 +198,18 @@ class FlowStats:
             "rst_count": self.tcp_flags_seen.get("R", 0),
             "bytes_per_second": round(self.byte_count / duration, 2),
         }
-
-        # Fan-out features: the real port-scan signature, computed across
-        # ALL flows from this flow's originating source IP, not just this one
-        if source_activity is not None and self.orig_src is not None:
-            row.update(source_activity.features_for(self.orig_src))
-        else:
-            row.update({"src_distinct_ports": 0, "src_distinct_hosts": 0, "src_conn_rate": 0.0})
-
+	# Use the source-activity snapshot captured during packet processing.
+        row.update(self.source_activity_features)
         row["label"] = "unknown"  # fill in manually or via known-attack IP/port rules
         return row
 
 
-def build_flows(packets):
+
+def build_flows(packets, activity=None):
     flows = {}
-    activity = SourceActivity()
+    if activity is None:
+        activity = SourceActivity()
+
     for pkt in packets:
         ts = float(pkt.time)
         activity.update(pkt, ts)
@@ -192,8 +219,17 @@ def build_flows(packets):
             continue
         if key not in flows:
             flows[key] = FlowStats(ts)
-        flows[key].update(pkt, ts)
+
+        stats = flows[key]
+        stats.update(pkt, ts)
+
+        if stats.orig_src is not None:
+            stats.source_activity_features = activity.features_for(
+                stats.orig_src, ts
+            )
+
     return flows, activity
+
 
 
 def write_csv(flows, activity, out_path):

@@ -1,0 +1,178 @@
+[1mdiff --git a/capture_and_extract.py b/capture_and_extract.py[m
+[1mindex 991a03c..805a839 100644[m
+[1m--- a/capture_and_extract.py[m
+[1m+++ b/capture_and_extract.py[m
+[36m@@ -57,53 +57,78 @@[m [mdef raw_endpoints(pkt):[m
+ [m
+ [m
+ class SourceActivity:[m
+[31m-    """Tracks, per source IP, how many distinct destination ports/hosts it[m
+[31m-    contacted across the WHOLE capture window. A port scan's signature is[m
+[31m-    exactly this: one source, many destination ports, in a short time --[m
+[31m-    invisible if you only look at a single flow in isolation."""[m
+[32m+[m[32m    """Track source activity within the preceding five seconds."""[m
+[32m+[m
+[32m+[m[32m    WINDOW_SECONDS = 5.0[m
+ [m
+     def __init__(self):[m
+[31m-        self.dst_ports = defaultdict(set)[m
+[31m-        self.dst_hosts = defaultdict(set)[m
+[31m-        self.packet_count = defaultdict(int)[m
+[31m-        self.first_ts = {}[m
+[31m-        self.last_ts = {}[m
+[32m+[m[32m        self.events = defaultdict(list)[m
+[32m+[m
+ [m
+     def update(self, pkt, ts):[m
+         endpoints = raw_endpoints(pkt)[m
+         if endpoints is None:[m
+             return[m
+[32m+[m
+         src, dst, dport = endpoints[m
+ [m
+[31m-        # Only count NEW connection ATTEMPTS toward fan-out -- a pure SYN[m
+[31m-        # (no ACK) for TCP. Without this, a server's normal replies to many[m
+[31m-        # different client ports look identical to a scan, since on loopback[m
+[31m-        # (or NAT) client and server can share the same IP. UDP has no[m
+[31m-        # handshake concept, so every packet counts as an "attempt".[m
+[31m-        is_attempt = True[m
+         if TCP in pkt:[m
+[31m-            flags = pkt[TCP].sprintf("%TCP.flags%")[m
+[31m-            is_attempt = "S" in flags and "A" not in flags[m
+[32m+[m[32m            flags = int(pkt[TCP].flags)[m
+[32m+[m[32m            syn = bool(flags & 0x02)[m
+[32m+[m[32m            ack = bool(flags & 0x10)[m
+ [m
+[31m-        if not is_attempt:[m
+[32m+[m[32m            if not syn or ack:[m
+[32m+[m[32m                return[m
+[32m+[m[32m        elif UDP not in pkt:[m
+             return[m
+ [m
+[31m-        if dport is not None:[m
+[31m-            self.dst_ports[src].add(dport)[m
+[31m-        self.dst_hosts[src].add(dst)[m
+[31m-        self.packet_count[src] += 1[m
+[31m-        if src not in self.first_ts:[m
+[31m-            self.first_ts[src] = ts[m
+[31m-        self.last_ts[src] = ts[m
+[31m-[m
+[31m-    def features_for(self, src_ip):[m
+[31m-        if src_ip not in self.packet_count:[m
+[31m-            return {"src_distinct_ports": 0, "src_distinct_hosts": 0, "src_conn_rate": 0.0}[m
+[31m-        window = max(self.last_ts[src_ip] - self.first_ts[src_ip], 1e-6)[m
+[32m+[m[32m        ts = float(ts)[m
+[32m+[m[32m        cutoff = ts - self.WINDOW_SECONDS[m
+[32m+[m
+[32m+[m[32m        # Remove expired events for this source.[m
+[32m+[m[32m        expired_sources = [][m
+[32m+[m
+[32m+[m[32m        for source, events in self.events.items():[m
+[32m+[m[32m            recent_events = [[m
+[32m+[m[32m                (event_ts, event_dst, event_port)[m
+[32m+[m[32m                for event_ts, event_dst, event_port in events[m
+[32m+[m[32m                if event_ts > cutoff[m
+[32m+[m[32m            ][m
+[32m+[m
+[32m+[m[32m            if recent_events:[m
+[32m+[m[32m                self.events[source] = recent_events[m
+[32m+[m[32m            else:[m
+[32m+[m[32m                expired_sources.append(source)[m
+[32m+[m
+[32m+[m[32m        for source in expired_sources:[m
+[32m+[m[32m            del self.events[source][m
+[32m+[m
+[32m+[m[32m        # Store the current event.[m
+[32m+[m[32m        self.events[src].append((ts, dst, dport))[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m[32m    def features_for(self, src_ip, ts):[m
+[32m+[m[32m        cutoff = float(ts) - self.WINDOW_SECONDS[m
+[32m+[m
+[32m+[m[32m        events = [[m
+[32m+[m[32m            (event_ts, dst, dport)[m
+[32m+[m[32m            for event_ts, dst, dport in self.events.get(src_ip, [])[m
+[32m+[m[32m            if cutoff < event_ts <= float(ts)[m
+[32m+[m[32m        ][m
+[32m+[m
+[32m+[m[32m        ports = {[m
+[32m+[m[32m            dport for _, _, dport in events[m
+[32m+[m[32m            if dport is not None[m
+[32m+[m[32m        }[m
+[32m+[m[32m        hosts = {dst for _, dst, _ in events}[m
+[32m+[m
+         return {[m
+[31m-            "src_distinct_ports": len(self.dst_ports[src_ip]),[m
+[31m-            "src_distinct_hosts": len(self.dst_hosts[src_ip]),[m
+[31m-            "src_conn_rate": round(self.packet_count[src_ip] / window, 2),[m
+[32m+[m[32m            "src_distinct_ports": len(ports),[m
+[32m+[m[32m            "src_distinct_hosts": len(hosts),[m
+[32m+[m[32m            "src_conn_rate": round([m
+[32m+[m[32m                len(events) / self.WINDOW_SECONDS, 2[m
+[32m+[m[32m            ),[m
+         }[m
+ [m
+ [m
+[36m@@ -120,6 +145,11 @@[m [mclass FlowStats:[m
+         self.tcp_flags_seen = defaultdict(int)  # e.g. {'S':2, 'A':10, 'F':1}[m
+         self.protocols = set()[m
+         self.orig_src = None  # source IP of the FIRST packet seen in this flow[m
+[32m+[m[32m        self.source_activity_features = {[m
+[32m+[m[32m            "src_distinct_ports": 0,[m
+[32m+[m[32m            "src_distinct_hosts": 0,[m
+[32m+[m[32m            "src_conn_rate": 0.0,[m
+[32m+[m[32m        }[m
+ [m
+     def update(self, pkt, ts):[m
+         if self.orig_src is None and IP in pkt:[m
+[36m@@ -168,21 +198,18 @@[m [mclass FlowStats:[m
+             "rst_count": self.tcp_flags_seen.get("R", 0),[m
+             "bytes_per_second": round(self.byte_count / duration, 2),[m
+         }[m
+[31m-[m
+[31m-        # Fan-out features: the real port-scan signature, computed across[m
+[31m-        # ALL flows from this flow's originating source IP, not just this one[m
+[31m-        if source_activity is not None and self.orig_src is not None:[m
+[31m-            row.update(source_activity.features_for(self.orig_src))[m
+[31m-        else:[m
+[31m-            row.update({"src_distinct_ports": 0, "src_distinct_hosts": 0, "src_conn_rate": 0.0})[m
+[31m-[m
+[32m+[m	[32m# Use the source-activity snapshot captured during packet processing.[m
+[32m+[m[32m        row.update(self.source_activity_features)[m
+         row["label"] = "unknown"  # fill in manually or via known-attack IP/port rules[m
+         return row[m
+ [m
+ [m
+[31m-def build_flows(packets):[m
+[32m+[m
+[32m+[m[32mdef build_flows(packets, activity=None):[m
+     flows = {}[m
+[31m-    activity = SourceActivity()[m
+[32m+[m[32m    if activity is None:[m
+[32m+[m[32m        activity = SourceActivity()[m
+[32m+[m
+     for pkt in packets:[m
+         ts = float(pkt.time)[m
+         activity.update(pkt, ts)[m
+[36m@@ -192,10 +219,19 @@[m [mdef build_flows(packets):[m
+             continue[m
+         if key not in flows:[m
+             flows[key] = FlowStats(ts)[m
+[31m-        flows[key].update(pkt, ts)[m
+[32m+[m
+[32m+[m[32m        stats = flows[key][m
+[32m+[m[32m        stats.update(pkt, ts)[m
+[32m+[m
+[32m+[m[32m        if stats.orig_src is not None:[m
+[32m+[m[32m            stats.source_activity_features = activity.features_for([m
+[32m+[m[32m                stats.orig_src, ts[m
+[32m+[m[32m            )[m
+[32m+[m
+     return flows, activity[m
+ [m
+ [m
+[32m+[m
+ def write_csv(flows, activity, out_path):[m
+     fieldnames = [[m
+         "src_ip", "src_port", "dst_ip", "dst_port", "protocol",[m

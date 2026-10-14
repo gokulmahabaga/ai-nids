@@ -1,0 +1,29 @@
+fold,heldout_attack,heldout_normal,feature_group,features,accuracy,balanced_accuracy
+1,attack_flows4.csv,normal_flows4.csv,All per-flow features,"protocol, duration, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+1,attack_flows4.csv,normal_flows4.csv,Packet count only,packet_count,1.0,1.0
+1,attack_flows4.csv,normal_flows4.csv,Duration only,duration,0.9982788296041308,0.9990925589836661
+1,attack_flows4.csv,normal_flows4.csv,Byte count only,byte_count,1.0,1.0
+1,attack_flows4.csv,normal_flows4.csv,Per-flow minus duration,"protocol, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+1,attack_flows4.csv,normal_flows4.csv,Per-flow minus packet count,"protocol, duration, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+1,attack_flows4.csv,normal_flows4.csv,Fan-out only,"src_distinct_ports, src_distinct_hosts, src_conn_rate",0.9982788296041308,0.9990925589836661
+2,new_attack1.csv,new_normal1.csv,All per-flow features,"protocol, duration, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+2,new_attack1.csv,new_normal1.csv,Packet count only,packet_count,1.0,1.0
+2,new_attack1.csv,new_normal1.csv,Duration only,duration,1.0,1.0
+2,new_attack1.csv,new_normal1.csv,Byte count only,byte_count,1.0,1.0
+2,new_attack1.csv,new_normal1.csv,Per-flow minus duration,"protocol, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+2,new_attack1.csv,new_normal1.csv,Per-flow minus packet count,"protocol, duration, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+2,new_attack1.csv,new_normal1.csv,Fan-out only,"src_distinct_ports, src_distinct_hosts, src_conn_rate",1.0,1.0
+3,new_attack2.csv,new_normal2.csv,All per-flow features,"protocol, duration, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",0.9942528735632183,0.9957627118644068
+3,new_attack2.csv,new_normal2.csv,Packet count only,packet_count,0.9942528735632183,0.9957627118644068
+3,new_attack2.csv,new_normal2.csv,Duration only,duration,0.9942528735632183,0.9957627118644068
+3,new_attack2.csv,new_normal2.csv,Byte count only,byte_count,1.0,1.0
+3,new_attack2.csv,new_normal2.csv,Per-flow minus duration,"protocol, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",0.9942528735632183,0.9957627118644068
+3,new_attack2.csv,new_normal2.csv,Per-flow minus packet count,"protocol, duration, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",0.9942528735632183,0.9957627118644068
+3,new_attack2.csv,new_normal2.csv,Fan-out only,"src_distinct_ports, src_distinct_hosts, src_conn_rate",1.0,1.0
+4,new_attack3.csv,new_normal3.csv,All per-flow features,"protocol, duration, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+4,new_attack3.csv,new_normal3.csv,Packet count only,packet_count,1.0,1.0
+4,new_attack3.csv,new_normal3.csv,Duration only,duration,1.0,1.0
+4,new_attack3.csv,new_normal3.csv,Byte count only,byte_count,1.0,1.0
+4,new_attack3.csv,new_normal3.csv,Per-flow minus duration,"protocol, packet_count, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+4,new_attack3.csv,new_normal3.csv,Per-flow minus packet count,"protocol, duration, byte_count, avg_packet_size, avg_inter_arrival_time, syn_count, ack_count, fin_count, rst_count, bytes_per_second",1.0,1.0
+4,new_attack3.csv,new_normal3.csv,Fan-out only,"src_distinct_ports, src_distinct_hosts, src_conn_rate",1.0,1.0

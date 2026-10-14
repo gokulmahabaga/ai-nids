@@ -1,0 +1,57 @@
+import unittest
+from scapy.all import IP, TCP
+from capture_and_extract_v2 import flow_key, FlowStats, SourceActivity, build_flows
+
+
+CLIENT = "203.0.113.10"
+SERVER = "192.0.2.20"
+
+
+def packet(src, dst, sport, dport, flags, ts):
+    pkt = IP(src=src, dst=dst) / TCP(
+        sport=sport, dport=dport, flags=flags
+    )
+    pkt.time = ts
+    return pkt
+
+
+class TestFlowDirection(unittest.TestCase):
+    def test_reverse_packets_share_one_canonical_key(self):
+        outgoing = packet(CLIENT, SERVER, 50000, 443, "S", 1.0)
+        incoming = packet(SERVER, CLIENT, 443, 50000, "SA", 1.1)
+
+        self.assertEqual(flow_key(outgoing), flow_key(incoming))
+
+    def test_exported_source_is_canonical_not_initiator(self):
+        outgoing = packet(CLIENT, SERVER, 50000, 443, "S", 1.0)
+        incoming = packet(SERVER, CLIENT, 443, 50000, "SA", 1.1)
+
+        flows, activity = build_flows([outgoing, incoming])
+        self.assertEqual(len(flows), 1)
+
+        key, stats = next(iter(flows.items()))
+        row = stats.to_row(key, source_activity=activity)
+
+        # The canonical source is lexicographically first.
+        self.assertEqual(row["src_ip"], min(CLIENT, SERVER))
+        # The observed first packet source is the client.
+        self.assertEqual(stats.orig_src, CLIENT)
+
+        # The test documents that these can differ.
+        self.assertNotEqual(row["src_ip"], stats.orig_src)
+
+
+    def test_initial_syn_sets_initiator_and_reverse_packet_does_not_overwrite(self):
+        outgoing = packet(CLIENT, SERVER, 50000, 443, "S", 1.0)
+        incoming = packet(SERVER, CLIENT, 443, 50000, "SA", 1.1)
+
+        flows, activity = build_flows([outgoing, incoming])
+        self.assertEqual(len(flows), 1)
+
+        _, stats = next(iter(flows.items()))
+        self.assertEqual(stats.orig_src, CLIENT)
+        self.assertEqual(stats.orig_sport, 50000)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

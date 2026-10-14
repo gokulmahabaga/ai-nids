@@ -1,0 +1,72 @@
+[
+  {
+    "request": 1,
+    "path": "health",
+    "status": 200,
+    "response_bytes": 124,
+    "success": true
+  },
+  {
+    "request": 2,
+    "path": "status?detail=short",
+    "status": 200,
+    "response_bytes": 280,
+    "success": true
+  },
+  {
+    "request": 3,
+    "path": "report?size=medium",
+    "status": 200,
+    "response_bytes": 268,
+    "success": true
+  },
+  {
+    "request": 4,
+    "path": "catalog?category=books",
+    "status": 200,
+    "response_bytes": 316,
+    "success": true
+  },
+  {
+    "request": 5,
+    "path": "search?q=network+security",
+    "status": 200,
+    "response_bytes": 352,
+    "success": true
+  },
+  {
+    "request": 6,
+    "path": "metrics?format=text",
+    "status": 200,
+    "response_bytes": 280,
+    "success": true
+  },
+  {
+    "request": 7,
+    "path": "help",
+    "status": 200,
+    "response_bytes": 100,
+    "success": true
+  },
+  {
+    "request": 8,
+    "path": "health?repeat=2",
+    "status": 200,
+    "response_bytes": 232,
+    "success": true
+  },
+  {
+    "request": 9,
+    "path": "report?size=large&section=summary",
+    "status": 200,
+    "response_bytes": 88,
+    "success": true
+  },
+  {
+    "request": 10,
+    "path": "status?detail=full",
+    "status": 200,
+    "response_bytes": 268,
+    "success": true
+  }
+]

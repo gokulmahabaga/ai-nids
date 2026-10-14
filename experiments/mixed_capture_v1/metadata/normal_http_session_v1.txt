@@ -1,0 +1,13 @@
+Experiment: Controlled normal HTTP loopback traffic
+Capture file: pcap/normal_http_session_v1.pcap
+Original flow file: flows/normal_http_session_v1.csv
+Labelled flow file: flows/normal_http_session_v1_labeled.csv
+Interface: lo
+Target: 127.0.0.1:8765
+Traffic generation: Ten HTTP GET requests with distinct query parameters
+Observed HTTP responses: Ten status-200 responses
+Captured packets: 240
+Extracted flows: 10
+Ground-truth class: Normal
+Label source: Controlled request-generation procedure and successful HTTP responses
+Limitations: Single loopback session; not representative of all normal traffic.

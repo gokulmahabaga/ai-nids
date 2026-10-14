@@ -1,0 +1,63 @@
+{
+  "input_file": "experiments/mixed_capture_v3/session_20261014_172114/flows/mixed_session_v2_v7_provisional_labels_v3.csv",
+  "features": [
+    "duration",
+    "packet_count",
+    "byte_count",
+    "avg_packet_size",
+    "avg_inter_arrival_time",
+    "syn_count",
+    "ack_count",
+    "fin_count",
+    "rst_count",
+    "bytes_per_second"
+  ],
+  "train_rows": 800,
+  "test_rows": 210,
+  "test_normal_rows": 10,
+  "test_portscan_rows": 200,
+  "accuracy": 0.9523809523809523,
+  "balanced_accuracy": 0.5,
+  "confusion_matrix_labels": [
+    "normal",
+    "portscan"
+  ],
+  "confusion_matrix": [
+    [
+      0,
+      10
+    ],
+    [
+      0,
+      200
+    ]
+  ],
+  "classification_report": {
+    "normal": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 10.0
+    },
+    "portscan": {
+      "precision": 0.9523809523809523,
+      "recall": 1.0,
+      "f1-score": 0.975609756097561,
+      "support": 200.0
+    },
+    "accuracy": 0.9523809523809523,
+    "macro avg": {
+      "precision": 0.47619047619047616,
+      "recall": 0.5,
+      "f1-score": 0.4878048780487805,
+      "support": 210.0
+    },
+    "weighted avg": {
+      "precision": 0.9070294784580498,
+      "recall": 0.9523809523809523,
+      "f1-score": 0.9291521486643438,
+      "support": 210.0
+    }
+  },
+  "limitation": "Exploratory single-capture result. Labels were assigned using destination-port ranges, and classes differ in packet count. This does not establish generalization to unseen sessions or networks."
+}

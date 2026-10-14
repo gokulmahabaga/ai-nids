@@ -59,24 +59,35 @@ def get_feature_columns(df):
     return [c for c in df.columns if c not in NON_FEATURE_COLUMNS]
 
 
+
 def fit_categorical_encoders(dfs, feature_cols):
-    """Fits one LabelEncoder per non-numeric feature column on the UNION of
-    values across all given dataframes (train + test), so a category value
-    that only appears in the test set (common in NSL-KDD) doesn't crash
-    transform() later."""
+    """Fit categorical encoders using training data only."""
+    train_df = dfs[0]
     encoders = {}
+
     for col in feature_cols:
-        if not is_numeric_dtype(dfs[0][col]):
-            combined = pd.concat([df[col] for df in dfs])
-            encoders[col] = LabelEncoder().fit(combined)
+        if not is_numeric_dtype(train_df[col]):
+            encoders[col] = LabelEncoder().fit(
+                train_df[col].astype(str)
+            )
+
     return encoders
 
 
 def apply_categorical_encoders(df, encoders):
+    """Encode unseen categories safely without fitting on test data."""
     df = df.copy()
+
     for col, enc in encoders.items():
-        df[col] = enc.transform(df[col])
+        mapping = {
+            value: index
+            for index, value in enumerate(enc.classes_)
+        }
+        encoded = df[col].astype(str).map(mapping)
+        df[col] = encoded.fillna(-1).astype(int)
+
     return df
+
 
 
 def rule_based_baseline(df):
@@ -110,22 +121,65 @@ def main():
 
     if args.test_data:
         test_df = load_data(args.test_data)
-        encoders = fit_categorical_encoders([train_df, test_df], feature_cols)
-        train_df = apply_categorical_encoders(train_df, encoders)
-        test_df = apply_categorical_encoders(test_df, encoders)
-        label_encoder.fit(pd.concat([train_df["label"], test_df["label"]]))
-        X_train, y_train = train_df[feature_cols], label_encoder.transform(train_df["label"])
-        X_test, y_test = test_df[feature_cols], label_encoder.transform(test_df["label"])
-        df_test = test_df
-    else:
+
         encoders = fit_categorical_encoders([train_df], feature_cols)
         train_df = apply_categorical_encoders(train_df, encoders)
-        y_all = label_encoder.fit_transform(train_df["label"])
-        X_train, X_test, y_train, y_test, _, df_test = train_test_split(
-            train_df[feature_cols], y_all, train_df,
-            test_size=args.test_size, random_state=42,
-            stratify=y_all if len(set(y_all)) > 1 else None,
+        test_df = apply_categorical_encoders(test_df, encoders)
+
+        label_encoder.fit(train_df["label"].astype(str))
+
+        X_train = train_df[feature_cols]
+        y_train = label_encoder.transform(
+            train_df["label"].astype(str)
         )
+
+        X_test = test_df[feature_cols]
+        test_labels = test_df["label"].astype(str)
+
+        unseen_labels = set(test_labels) - set(label_encoder.classes_)
+        if unseen_labels:
+            raise ValueError(
+                f"Test set contains labels absent from training data: {unseen_labels}"
+            )
+        else:
+            y_test = label_encoder.transform(test_labels)
+
+
+    else:
+        y_all = label_encoder.fit_transform(
+            train_df["label"].astype(str)
+        )
+
+        # Split raw data before fitting categorical encoders.
+        df_train, df_test = train_test_split(
+            train_df,
+            test_size=args.test_size,
+            random_state=42,
+            stratify=y_all,
+        )
+
+        # Fit encoders on training data only.
+        encoders = fit_categorical_encoders(
+            [df_train], feature_cols
+        )
+
+        df_train = apply_categorical_encoders(
+            df_train, encoders
+        )
+        df_test = apply_categorical_encoders(
+            df_test, encoders
+        )
+
+        X_train = df_train[feature_cols]
+        y_train = label_encoder.transform(
+            df_train["label"].astype(str)
+        )
+
+        X_test = df_test[feature_cols]
+        y_test = label_encoder.transform(
+            df_test["label"].astype(str)
+        )
+
 
     clf = RandomForestClassifier(
         n_estimators=200, max_depth=15, random_state=42, class_weight="balanced"

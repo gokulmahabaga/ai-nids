@@ -1,0 +1,24 @@
+elapsed_seconds,activity,detail
+0.04,session_start,/home/hp/ai-nids/experiments/mixed_capture_v4/session_20261014_174323_729256
+1.043,normal_http_start,request=1 url=http://127.0.0.1:8765/health
+1.093,normal_http_result,request=1 status=200 bytes=124
+1.444,normal_http_start,request=2 url=http://127.0.0.1:8765/status?detail=short
+1.446,normal_http_result,request=2 status=200 bytes=280
+1.947,normal_http_start,request=3 url=http://127.0.0.1:8765/report?size=medium
+1.95,normal_http_result,request=3 status=200 bytes=268
+2.151,scan_start,nmap -sS -Pn -n -p 1-1000 --scan-delay 5ms 127.0.0.1
+2.501,normal_http_start,request=4 url=http://127.0.0.1:8765/catalog?category=books
+2.505,normal_http_result,request=4 status=200 bytes=316
+2.975,normal_http_start,request=5 url=http://127.0.0.1:8765/search?q=network+security
+2.98,normal_http_result,request=5 status=200 bytes=352
+3.57,normal_http_start,request=6 url=http://127.0.0.1:8765/metrics?format=text
+3.573,normal_http_result,request=6 status=200 bytes=280
+4.284,normal_http_start,request=7 url=http://127.0.0.1:8765/help
+4.288,normal_http_result,request=7 status=200 bytes=100
+4.638,normal_http_start,request=8 url=http://127.0.0.1:8765/health?repeat=2
+4.641,normal_http_result,request=8 status=200 bytes=232
+5.111,normal_http_start,request=9 url=http://127.0.0.1:8765/report?size=large&section=summary
+5.115,normal_http_result,request=9 status=200 bytes=88
+5.706,normal_http_start,request=10 url=http://127.0.0.1:8765/status?detail=full
+5.709,normal_http_result,request=10 status=200 bytes=268
+7.563,scan_result,return_code=0

@@ -1,0 +1,4 @@
+src_ip,src_port,dst_ip,dst_port,protocol,initiator_ip,initiator_port,duration,packet_count,byte_count,avg_packet_size,avg_inter_arrival_time,syn_count,ack_count,fin_count,rst_count,bytes_per_second,src_distinct_ports,src_distinct_hosts,src_conn_rate,label
+127.0.0.1,80,127.0.0.1,57582,6,127.0.0.1,57582,5.1e-05,4,256,64.0,1.7e-05,2,2,0,2,5017485.16,1,1,0.4,unknown
+127.0.0.1,443,127.0.0.1,60980,6,127.0.0.1,60980,6e-06,4,256,64.0,2e-06,2,2,0,2,42949672.96,2,1,0.8,unknown
+127.0.0.1,8765,127.0.0.1,41028,6,127.0.0.1,41028,8.9e-05,8,560,70.0,1.3e-05,4,6,0,2,6297078.39,3,1,1.2,unknown

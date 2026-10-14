@@ -1,0 +1,26 @@
+model,feature,importance
+RF per-flow,fin_count,0.133
+RF per-flow,syn_count,0.13
+RF per-flow,ack_count,0.119
+RF per-flow,avg_packet_size,0.11700000000000002
+RF per-flow,avg_inter_arrival_time,0.10900000000000001
+RF per-flow,duration,0.10900000000000001
+RF per-flow,packet_count,0.10900000000000001
+RF per-flow,byte_count,0.10400686104320922
+RF per-flow,bytes_per_second,0.06999313895679078
+RF per-flow,protocol,0.0
+RF per-flow,rst_count,0.0
+RF with fan-out,avg_inter_arrival_time,0.10800686233980983
+RF with fan-out,src_distinct_ports,0.10699999999999998
+RF with fan-out,byte_count,0.10200000000000001
+RF with fan-out,syn_count,0.101
+RF with fan-out,avg_packet_size,0.093
+RF with fan-out,ack_count,0.09
+RF with fan-out,src_conn_rate,0.09
+RF with fan-out,fin_count,0.089
+RF with fan-out,packet_count,0.07999999999999999
+RF with fan-out,duration,0.07899828178694158
+RF with fan-out,bytes_per_second,0.06099313766019017
+RF with fan-out,protocol,1.7182130584190751e-06
+RF with fan-out,rst_count,0.0
+RF with fan-out,src_distinct_hosts,0.0

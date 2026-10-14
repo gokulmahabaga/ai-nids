@@ -1,0 +1,13 @@
+fold,heldout_attack,heldout_normal,model,feature_count,train_rows,test_rows,accuracy,balanced_accuracy,precision_portscan,recall_portscan,f1_portscan,tn,fp,fn,tp
+1,attack_flows4.csv,normal_flows4.csv,Per-flow only,11,415,581,1.0,1.0,1.0,1.0,1.0,30,0,0,551
+1,attack_flows4.csv,normal_flows4.csv,Per-flow + fan-out,14,415,581,1.0,1.0,1.0,1.0,1.0,30,0,0,551
+1,attack_flows4.csv,normal_flows4.csv,Fan-out only,3,415,581,0.9982788296041308,0.9990925589836661,1.0,0.9981851179673321,0.9990917347865577,30,0,1,550
+2,new_attack1.csv,new_normal1.csv,Per-flow only,11,860,136,1.0,1.0,1.0,1.0,1.0,56,0,0,80
+2,new_attack1.csv,new_normal1.csv,Per-flow + fan-out,14,860,136,1.0,1.0,1.0,1.0,1.0,56,0,0,80
+2,new_attack1.csv,new_normal1.csv,Fan-out only,3,860,136,1.0,1.0,1.0,1.0,1.0,56,0,0,80
+3,new_attack2.csv,new_normal2.csv,Per-flow only,11,822,174,0.9942528735632183,0.9957627118644068,1.0,0.9915254237288136,0.9957446808510638,56,0,1,117
+3,new_attack2.csv,new_normal2.csv,Per-flow + fan-out,14,822,174,0.9942528735632183,0.9957627118644068,1.0,0.9915254237288136,0.9957446808510638,56,0,1,117
+3,new_attack2.csv,new_normal2.csv,Fan-out only,3,822,174,1.0,1.0,1.0,1.0,1.0,56,0,0,118
+4,new_attack3.csv,new_normal3.csv,Per-flow only,11,891,105,1.0,1.0,1.0,1.0,1.0,51,0,0,54
+4,new_attack3.csv,new_normal3.csv,Per-flow + fan-out,14,891,105,1.0,1.0,1.0,1.0,1.0,51,0,0,54
+4,new_attack3.csv,new_normal3.csv,Fan-out only,3,891,105,1.0,1.0,1.0,1.0,1.0,51,0,0,54

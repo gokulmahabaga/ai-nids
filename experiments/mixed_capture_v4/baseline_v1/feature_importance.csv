@@ -1,0 +1,11 @@
+feature,importance
+bytes_per_second,0.12
+byte_count,0.12
+avg_packet_size,0.115
+syn_count,0.11
+ack_count,0.1
+duration,0.095
+avg_inter_arrival_time,0.095
+rst_count,0.09
+packet_count,0.085
+fin_count,0.07

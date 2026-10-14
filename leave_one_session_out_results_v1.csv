@@ -1,0 +1,13 @@
+fold,heldout_attack_session,heldout_normal_session,model,features,train_rows,test_rows,accuracy,balanced_accuracy,precision_portscan,recall_portscan,tn,fp,fn,tp
+1,attack_flows4.csv,normal_flows4.csv,RF per-flow,11,415,581,1.0,1.0,1.0,1.0,30,0,0,551
+1,attack_flows4.csv,normal_flows4.csv,RF with fan-out,14,415,581,1.0,1.0,1.0,1.0,30,0,0,551
+1,attack_flows4.csv,normal_flows4.csv,RF without distinct ports,13,415,581,1.0,1.0,1.0,1.0,30,0,0,551
+2,new_attack1.csv,new_normal1.csv,RF per-flow,11,860,136,1.0,1.0,1.0,1.0,56,0,0,80
+2,new_attack1.csv,new_normal1.csv,RF with fan-out,14,860,136,1.0,1.0,1.0,1.0,56,0,0,80
+2,new_attack1.csv,new_normal1.csv,RF without distinct ports,13,860,136,1.0,1.0,1.0,1.0,56,0,0,80
+3,new_attack2.csv,new_normal2.csv,RF per-flow,11,822,174,0.9942528735632183,0.9957627118644068,1.0,0.9915254237288136,56,0,1,117
+3,new_attack2.csv,new_normal2.csv,RF with fan-out,14,822,174,0.9942528735632183,0.9957627118644068,1.0,0.9915254237288136,56,0,1,117
+3,new_attack2.csv,new_normal2.csv,RF without distinct ports,13,822,174,0.9942528735632183,0.9957627118644068,1.0,0.9915254237288136,56,0,1,117
+4,new_attack3.csv,new_normal3.csv,RF per-flow,11,891,105,1.0,1.0,1.0,1.0,51,0,0,54
+4,new_attack3.csv,new_normal3.csv,RF with fan-out,14,891,105,1.0,1.0,1.0,1.0,51,0,0,54
+4,new_attack3.csv,new_normal3.csv,RF without distinct ports,13,891,105,1.0,1.0,1.0,1.0,51,0,0,54

@@ -1,0 +1,13 @@
+Experiment: Local TCP connectivity test
+Capture file: pcap/local_scan_v1.pcap
+Deduplicated test capture: pcap/local_scan_v1_dedup_test.pcap
+Extracted flows: flows/local_scan_v1_v4.csv
+Interface: lo
+Target host: 127.0.0.1
+Observed target ports: 80, 443, 8765
+Original captured packets: 16
+Unique TCP signatures: 8
+Connection attempts: 3
+Purpose: Diagnostic connectivity test
+Ground-truth class: Not assigned as a broad port scan
+Limitations: Small loopback capture; repeated observations were removed only in a separate diagnostic PCAP. Not suitable for evaluating scan-detection performance.

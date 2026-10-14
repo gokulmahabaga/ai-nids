@@ -1,0 +1,136 @@
+import os
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (
+    accuracy_score, classification_report, confusion_matrix
+)
+
+TRAIN_FILES = ["attack_flows4.csv", "normal_flows4.csv"]
+TEST_FILES = [
+    "new_attack1.csv", "new_normal1.csv",
+    "new_attack2.csv", "new_normal2.csv",
+    "new_attack3.csv", "new_normal3.csv",
+]
+
+DROP = {"label", "difficulty", "src_ip", "dst_ip",
+        "src_port", "dst_port", "session"}
+FANOUT = ["src_distinct_ports", "src_distinct_hosts", "src_conn_rate"]
+
+def load_files(paths):
+    frames = []
+    for path in paths:
+        df = pd.read_csv(path)
+        name = os.path.basename(path).lower()
+        if "attack" in name:
+            df["label"] = "portscan"
+        elif "normal" in name:
+            df["label"] = "normal"
+        else:
+            raise ValueError(f"Cannot infer label from {path}")
+        df["session"] = name
+        frames.append(df)
+    return pd.concat(frames, ignore_index=True)
+
+train = load_files(TRAIN_FILES)
+test = load_files(TEST_FILES)
+
+all_features = [
+    c for c in train.columns
+    if c not in DROP and c in test.columns
+]
+per_flow = [c for c in all_features if c not in FANOUT]
+with_fanout = per_flow + [c for c in FANOUT if c in all_features]
+
+# Keep only numeric features and fail loudly if any are missing.
+for c in all_features:
+    train[c] = pd.to_numeric(train[c], errors="raise")
+    test[c] = pd.to_numeric(test[c], errors="raise")
+
+print("TRAIN:", len(train), train.label.value_counts().to_dict())
+print("TEST: ", len(test), test.label.value_counts().to_dict())
+print("Train/test session overlap:",
+      set(train.session) & set(test.session) or "none")
+
+summary = []
+session_rows = []
+
+for name, features in [
+    ("RF per-flow", per_flow),
+    ("RF with fan-out", with_fanout),
+]:
+    seed_scores = []
+    model = None
+
+    for seed in range(5):
+        model = RandomForestClassifier(
+            n_estimators=200,
+            max_depth=15,
+            random_state=seed,
+            class_weight="balanced",
+        )
+        model.fit(train[features], train.label)
+        pred = model.predict(test[features])
+        seed_scores.append(accuracy_score(test.label, pred))
+
+    print("\n" + "=" * 60)
+    print(name, "| features:", len(features))
+    print(f"Accuracy across 5 seeds: {np.mean(seed_scores):.4f}"
+          f" +/- {np.std(seed_scores):.4f}")
+    print("Seed 0 classification report:")
+    print(classification_report(
+        test.label, pred, labels=["normal", "portscan"],
+        zero_division=0, digits=3
+    ))
+    print("Seed 0 confusion matrix (actual rows, predicted columns):")
+    print(pd.DataFrame(
+        confusion_matrix(test.label, pred, labels=["normal", "portscan"]),
+        index=["actual normal", "actual portscan"],
+        columns=["pred normal", "pred portscan"],
+    ).to_string())
+
+    test_copy = test.copy()
+    test_copy["pred"] = pred
+    for session, group in test_copy.groupby("session"):
+        acc = accuracy_score(group.label, group.pred)
+        session_rows.append({
+            "model": name, "session": session,
+            "rows": len(group), "accuracy": acc
+        })
+        print(f"{session}: {acc:.3f} ({len(group)} rows)")
+
+    importance = pd.Series(
+        model.feature_importances_, index=features
+    ).sort_values(ascending=False)
+    print("Feature importances (seed 4):")
+    print(importance.round(4).to_string())
+
+    summary.append({
+        "model": name,
+        "mean_accuracy_5_seeds": np.mean(seed_scores),
+        "std_accuracy_5_seeds": np.std(seed_scores),
+    })
+
+# Simple threshold baseline, evaluated on exactly the same test rows.
+print("\n" + "=" * 60)
+print("Rule baseline: src_distinct_ports > 20")
+if "src_distinct_ports" in test.columns:
+    rule_pred = np.where(
+        test["src_distinct_ports"] > 20, "portscan", "normal"
+    )
+    print(f"Accuracy: {accuracy_score(test.label, rule_pred):.4f}")
+    print(classification_report(
+        test.label, rule_pred, labels=["normal", "portscan"],
+        zero_division=0, digits=3
+    ))
+    print(pd.DataFrame(
+        confusion_matrix(test.label, rule_pred, labels=["normal", "portscan"]),
+        index=["actual normal", "actual portscan"],
+        columns=["pred normal", "pred portscan"],
+    ).to_string())
+else:
+    print("Feature not available.")
+
+pd.DataFrame(summary).to_csv("session_model_comparison.csv", index=False)
+pd.DataFrame(session_rows).to_csv("session_accuracies.csv", index=False)
+print("\nSaved session_model_comparison.csv and session_accuracies.csv")

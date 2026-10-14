@@ -1,0 +1,2 @@
+src_ip,src_port,dst_ip,dst_port,protocol,initiator_ip,initiator_port,duration,packet_count,byte_count,avg_packet_size,avg_inter_arrival_time,syn_count,ack_count,fin_count,rst_count,bytes_per_second,src_distinct_ports,src_distinct_hosts,src_conn_rate,label
+104.20.23.154,443,172.23.169.133,34938,6,172.23.169.133,34938,0.078793,26,9509,365.73,0.003152,2,25,2,0,120683.6,1,1,0.2,unknown

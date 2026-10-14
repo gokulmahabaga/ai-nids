@@ -1,0 +1,68 @@
+{
+  "source": "experiments/mixed_capture_v4/session_20261014_173700_883079/flows/mixed_session_v3_v7_labeled.csv",
+  "features": [
+    "duration",
+    "packet_count",
+    "byte_count",
+    "avg_packet_size",
+    "avg_inter_arrival_time",
+    "syn_count",
+    "ack_count",
+    "fin_count",
+    "rst_count",
+    "bytes_per_second"
+  ],
+  "split": "stratified random 80/20; random_state=42",
+  "train_counts": {
+    "portscan": 800,
+    "normal": 8
+  },
+  "test_counts": {
+    "portscan": 200,
+    "normal": 2
+  },
+  "confusion_matrix_labels": [
+    "normal",
+    "portscan"
+  ],
+  "confusion_matrix": [
+    [
+      2,
+      0
+    ],
+    [
+      0,
+      200
+    ]
+  ],
+  "accuracy": 1.0,
+  "balanced_accuracy": 1.0,
+  "classification_report": {
+    "normal": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 2.0
+    },
+    "portscan": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 200.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 202.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 202.0
+    }
+  },
+  "limitation": "Single loopback capture; only 10 normal flows; provisional procedure-derived labels; random split is not independent-session validation."
+}
