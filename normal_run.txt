@@ -1,0 +1,7 @@
+Loaded model with features: ['protocol', 'duration', 'packet_count', 'byte_count', 'avg_packet_size', 'avg_inter_arrival_time', 'syn_count', 'ack_count', 'fin_count', 'rst_count', 'bytes_per_second', 'src_distinct_ports', 'src_distinct_hosts', 'src_conn_rate']
+Sniffing on lo in 15s windows. Ctrl+C to stop.
+
+[window 1] no packets captured
+[window 2] no packets captured
+[window 3] no packets captured
+[window 4] no packets captured
