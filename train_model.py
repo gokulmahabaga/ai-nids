@@ -133,7 +133,10 @@ def main():
     clf.fit(X_train, y_train)
 
     y_pred = clf.predict(X_test)
+    print("\nFeature importances:")
+    importances = pd.Series(clf.feature_importances_,index=feature_cols).sort_values(ascending=False)
 
+    print(importances.to_string())
     print("\n=== Random Forest results ===")
     print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
     print(classification_report(y_test, y_pred, target_names=label_encoder.classes_))
