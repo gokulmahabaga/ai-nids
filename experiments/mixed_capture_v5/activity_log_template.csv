@@ -1,3 +1,2 @@
-event_id,start_time,end_time,activity_type,label,target,protocol,evidence,operator_notes
-E001,2026-10-18T10:00:00+05:30,2026-10-18T10:00:15+05:30,benign_http,normal,127.0.0.1,tcp,server_log_and_capture,Example only - replace with a real recorded event
-E002,2026-10-18T10:01:00+05:30,2026-10-18T10:01:30+05:30,authorized_port_scan,portscan,127.0.0.1,tcp,nmap_output_and_capture,Example only - replace with a real recorded event
+event_id,start_time_utc,end_time_utc,start_epoch,end_epoch,activity_type,intended_label,target_ip,target_port,protocol,status,evidence
+EXAMPLE-REMOVE,2026-10-18T10:00:00.000000Z,2026-10-18T10:00:15.000000Z,1792317600.000000,1792317615.000000,benign_http,normal,127.0.0.1,8765,tcp,example_only,replace_with_real_log_reference
