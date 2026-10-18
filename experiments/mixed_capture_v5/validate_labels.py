@@ -41,9 +41,19 @@ def audit_activity_log(path: Path | None) -> dict:
     if path is None:
         return {"provided": False, "note": "No independent activity log supplied."}
     fields, rows = load_csv(path)
-    required = {"event_id", "start_time", "end_time", "activity_type", "label", "evidence"}
     lower_fields = {field.strip().lower() for field in fields}
-    missing = sorted(required - lower_fields)
+    aliases = {
+        "event_id": {"event_id"},
+        "start_time": {"start_time", "start_time_utc"},
+        "end_time": {"end_time", "end_time_utc"},
+        "activity_type": {"activity_type"},
+        "label": {"label", "intended_label"},
+        "evidence": {"evidence"},
+    }
+    missing = sorted(
+        logical for logical, accepted in aliases.items()
+        if not (accepted & lower_fields)
+    )
     return {
         "provided": True,
         "path": str(path),
